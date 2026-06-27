@@ -1,0 +1,58 @@
+---
+layout: base.njk
+title: Tags
+permalink: /tags/
+---
+<nav class="breadcrumb container container--narrow" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">/</span>
+  <span class="breadcrumb-current" aria-current="page">Tags</span>
+</nav>
+<div class="tags-page container container--narrow">
+  <h1 class="tags-page-title">Tags</h1>
+  <p class="tags-page-sub">Browse posts by topic.</p>
+
+  <div class="tag-sort-bar">
+    <span class="tag-sort-label">Sort by</span>
+    <button class="tag-sort-btn tag-sort-btn--active" data-sort="alpha" aria-pressed="true">A → Z</button>
+    <button class="tag-sort-btn" data-sort="count" aria-pressed="false">Most posts</button>
+  </div>
+
+  <ul class="tag-list">
+    {% for tag in collections.tagList %}
+      <li class="tag-list-item" data-name="{{ tag | lower }}" data-count="{{ collections[tag].length }}">
+        <a href="/tags/{{ tag | slug }}/" class="tag-list-link">
+          <span class="tag-list-name">{{ tag }}</span>
+          <span class="tag-list-count">{{ collections[tag].length }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<script>
+  (function () {
+    const list = document.querySelector('.tag-list');
+    const buttons = document.querySelectorAll('.tag-sort-btn');
+
+    function sortItems(by) {
+      const items = [...list.querySelectorAll('.tag-list-item')];
+      items.sort((a, b) => {
+        if (by === 'count') {
+          return Number(b.dataset.count) - Number(a.dataset.count);
+        }
+        return a.dataset.name.localeCompare(b.dataset.name);
+      });
+      items.forEach(item => list.appendChild(item));
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => { b.classList.remove('tag-sort-btn--active'); b.setAttribute('aria-pressed', 'false'); });
+        btn.classList.add('tag-sort-btn--active');
+        btn.setAttribute('aria-pressed', 'true');
+        sortItems(btn.dataset.sort);
+      });
+    });
+  })();
+</script>

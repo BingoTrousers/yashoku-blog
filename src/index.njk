@@ -1,0 +1,97 @@
+---
+layout: base.njk
+pagination:
+  data: collections.posts
+  size: 6
+  alias: paginatedPosts
+permalink: "{% if pagination.pageNumber == 0 %}/{% else %}/page/{{ pagination.pageNumber + 1 }}/{% endif %}"
+eleventyComputed:
+  title: "{% if pagination.pageNumber == 0 %}Home{% else %}Page {{ pagination.pageNumber + 1 }}{% endif %}"
+---
+<div class="home">
+  {% if pagination.pageNumber > 0 %}
+    <nav class="breadcrumb container" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="breadcrumb-sep" aria-hidden="true">/</span>
+      <span class="breadcrumb-current" aria-current="page">Page {{ pagination.pageNumber + 1 }}</span>
+    </nav>
+  {% endif %}
+  {% if pagination.pageNumber == 0 %}
+    <section class="hero container">
+      <h1 class="hero-title">{{ site.title }}</h1>
+      <p class="hero-sub">{{ site.description }}</p>
+    </section>
+  {% endif %}
+
+  <section class="post-list container">
+    {% if pagination.pageNumber == 0 %}
+      <h2 class="post-list-heading">All Posts</h2>
+    {% endif %}
+    {% if paginatedPosts.length %}
+      <div class="post-grid">
+        {% for post in paginatedPosts %}
+          <article class="post-card" data-url="{{ post.url }}">
+            <div class="post-card-thumb">
+              {% if post.data.thumbnail %}
+                <img src="{{ post.data.thumbnail }}" alt="{{ post.data.title }}" loading="lazy" />
+              {% endif %}
+            </div>
+            <div class="post-card-body">
+              {% if post.data.tags %}
+                <div class="post-tags">
+                  {% for tag in post.data.tags %}
+                    {% if tag != "posts" %}
+                      <a href="/tags/{{ tag | slug }}/" class="tag">{{ tag }}</a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <h2 class="post-card-title">
+                <a href="{{ post.url }}">{{ post.data.title }}</a>
+              </h2>
+              {% if post.data.author %}
+                <p class="post-card-author">{{ post.data.author }}</p>
+              {% endif %}
+              {% if post.data.description %}
+                <p class="post-card-excerpt">{{ post.data.description }}</p>
+              {% endif %}
+              <div class="post-meta">
+                <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
+                {% if post.data.readingTime %}
+                  <span class="post-meta-sep">·</span>
+                  <span>{{ post.data.readingTime }} min read</span>
+                {% endif %}
+                <a href="{{ post.url }}" class="post-card-cta" tabindex="-1" aria-hidden="true">Read post &rarr;</a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+      <p id="search-no-results" hidden>No posts match your search.</p>
+    {% else %}
+      <p class="no-posts">No posts yet — check back soon.</p>
+    {% endif %}
+
+    {% if pagination.hrefs.length > 1 %}
+      <nav class="pagination" aria-label="Page navigation">
+        <a href="{{ pagination.previousPageHref or '#' }}"
+           class="pagination-btn pagination-prev{% if not pagination.previousPageHref %} pagination-btn--disabled{% endif %}"
+           {% if not pagination.previousPageHref %}aria-disabled="true"{% endif %}>&#8592;</a>
+
+        <div class="pagination-pages">
+          {% for href in pagination.hrefs %}
+            <a href="{{ href }}"
+               class="pagination-page{% if loop.index0 == pagination.pageNumber %} pagination-page--active{% endif %}"
+               {% if loop.index0 == pagination.pageNumber %}aria-current="page"{% endif %}>
+              {{ loop.index }}
+            </a>
+          {% endfor %}
+        </div>
+
+        <a href="{{ pagination.nextPageHref or '#' }}"
+           class="pagination-btn pagination-next{% if not pagination.nextPageHref %} pagination-btn--disabled{% endif %}"
+           {% if not pagination.nextPageHref %}aria-disabled="true"{% endif %}>&#8594;</a>
+      </nav>
+    {% endif %}
+  </section>
+</div>

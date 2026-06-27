@@ -1,0 +1,64 @@
+---
+pagination:
+  data: collections.tagList
+  size: 1
+  alias: tag
+permalink: /tags/{{ tag | slug }}/
+eleventyComputed:
+  title: "{{ tag }}"
+layout: base.njk
+---
+<div class="tag-archive container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+    <a href="/tags/">Tags</a>
+    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+    <span class="breadcrumb-current" aria-current="page">{{ tag }}</span>
+  </nav>
+
+  <header class="tag-archive-header">
+    <h1 class="tag-archive-title"><span class="tag tag--large">{{ tag }}</span></h1>
+    <p class="tag-archive-count">{{ collections[tag].length }} post{% if collections[tag].length != 1 %}s{% endif %}</p>
+  </header>
+
+  <div class="post-grid">
+    {% for post in collections[tag] | reverse %}
+      <article class="post-card" data-url="{{ post.url }}">
+        <div class="post-card-thumb">
+          {% if post.data.thumbnail %}
+            <img src="{{ post.data.thumbnail }}" alt="{{ post.data.title }}" loading="lazy" />
+          {% endif %}
+        </div>
+        <div class="post-card-body">
+          {% if post.data.tags %}
+            <div class="post-tags">
+              {% for t in post.data.tags %}
+                {% if t != "posts" %}
+                  <a href="/tags/{{ t | slug }}/" class="tag{% if t == tag %} tag--active{% endif %}">{{ t }}</a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <h2 class="post-card-title">
+            <a href="{{ post.url }}">{{ post.data.title }}</a>
+          </h2>
+          {% if post.data.author %}
+            <p class="post-card-author">{{ post.data.author }}</p>
+          {% endif %}
+          {% if post.data.description %}
+            <p class="post-card-excerpt">{{ post.data.description }}</p>
+          {% endif %}
+          <div class="post-meta">
+            <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
+            {% if post.data.readingTime %}
+              <span class="post-meta-sep">·</span>
+              <span>{{ post.data.readingTime }} min read</span>
+            {% endif %}
+            <a href="{{ post.url }}" class="post-card-cta" tabindex="-1" aria-hidden="true">Read post &rarr;</a>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</div>

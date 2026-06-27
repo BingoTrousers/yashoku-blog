@@ -1,0 +1,18 @@
+{
+  "title": "夜食 Yashoku",
+  "description": "Late nights, bright lights, and the best food you'll ever eat standing up. A guide to Japan's nocturnal street food scene.",
+  "url": "https://example.com",
+  "author": {
+    "name": "Hiroshi Nakamura",
+    "bio": "Food writer and late-night eater based between Tokyo and Osaka. I write about Japan's nocturnal street food culture — the izakayas, yatai, ramen carts, and standing bars that only make sense after dark."
+  },
+  "nav": [
+    { "label": "Home", "url": "/" },
+    { "label": "Tags", "url": "/tags/" },
+    { "label": "About", "url": "/about/" }
+  ],
+  "social": {
+    "twitter": "",
+    "instagram": ""
+  }
+}

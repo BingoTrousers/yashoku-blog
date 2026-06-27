@@ -1,0 +1,41 @@
+---
+layout: base.njk
+---
+<article class="post">
+  <header class="post-header{% if thumbnail %} post-header--hero{% endif %}"
+    {% if thumbnail %}style="background-image: url('{{ thumbnail }}')"{% endif %}>
+    <div class="container container--narrow">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+        <span class="breadcrumb-current" aria-current="page">{{ title }}</span>
+      </nav>
+      {% if tags %}
+        <div class="post-tags">
+          {% for tag in tags %}
+            {% if tag != "posts" %}
+              <a href="/tags/{{ tag | slug }}/" class="tag">{{ tag }}</a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <h1 class="post-title">{{ title }}</h1>
+      {% if description %}
+        <p class="post-description">{{ description }}</p>
+      {% endif %}
+      <div class="post-meta">
+        <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+        {% if author %}<span class="post-meta-sep">·</span><span>{{ author }}</span>{% endif %}
+        {% if readingTime %}<span class="post-meta-sep">·</span><span>{{ readingTime }} min read</span>{% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="post-body container container--narrow">
+    {{ content | safe }}
+  </div>
+
+  <footer class="post-footer container container--narrow">
+    <a href="/" class="back-link">&larr; All posts</a>
+  </footer>
+</article>
