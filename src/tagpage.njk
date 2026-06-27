@@ -27,7 +27,12 @@ layout: base.njk
       <article class="post-card" data-url="{{ post.url }}">
         <div class="post-card-thumb">
           {% if post.data.thumbnail %}
-            <img src="{{ post.data.thumbnail }}" alt="{{ post.data.title }}" loading="lazy" />
+            <img
+              src="{{ post.data.thumbnail | imgSrc(600, 72) }}"
+              srcset="{{ post.data.thumbnail | imgSrc(400, 65) }} 400w, {{ post.data.thumbnail | imgSrc(800, 75) }} 800w"
+              sizes="(max-width: 600px) calc(100vw - 2rem), 380px"
+              alt="{{ post.data.title }}"
+              {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} />
           {% endif %}
         </div>
         <div class="post-card-body">
