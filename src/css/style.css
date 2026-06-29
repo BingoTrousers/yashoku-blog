@@ -250,6 +250,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: var(--space-sm);
   margin-bottom: var(--space-xl);
   padding-bottom: var(--space-lg);
