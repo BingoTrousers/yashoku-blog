@@ -9,6 +9,7 @@
   "nav": [
     { "label": "Home", "url": "/" },
     { "label": "Tags", "url": "/tags/" },
+    { "label": "Rankings", "url": "/rankings/" },
     { "label": "About", "url": "/about/" }
   ],
   "social": {

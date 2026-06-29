@@ -12,6 +12,7 @@ tags:
   - Nightlife
   - Takoyaki
   - Kushikatsu
+  - Osaka
 ---
 
 There is a word the Japanese use — *kuidaore* — which roughly translates as "eat yourself into ruin." It is said that people in Kyoto blow their money on clothes, while people in Osaka spend it all on food. Walk through Osaka after dark and you will believe it immediately.

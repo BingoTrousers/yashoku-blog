@@ -10,6 +10,7 @@ tags:
   - posts
   - Ramen
   - Hokkaido
+  - Sapporo
   - Miso
   - Winter
 ---

@@ -18,6 +18,8 @@ permalink: /tags/
     <button class="tag-sort-btn" data-sort="count" aria-pressed="false">Most posts</button>
   </div>
 
+  <div class="tag-alpha-bar" id="tag-alpha-bar" hidden></div>
+
   <ul class="tag-list">
     {% for tag in collections.tagList %}
       <li class="tag-list-item" data-name="{{ tag | lower }}" data-count="{{ collections[tag].length }}">
@@ -33,26 +35,74 @@ permalink: /tags/
 <script>
   (function () {
     const list = document.querySelector('.tag-list');
-    const buttons = document.querySelectorAll('.tag-sort-btn');
+    const sortBtns = document.querySelectorAll('.tag-sort-btn');
+    const alphaBar = document.getElementById('tag-alpha-bar');
+    const items = [...list.querySelectorAll('.tag-list-item')];
 
-    function sortItems(by) {
-      const items = [...list.querySelectorAll('.tag-list-item')];
-      items.sort((a, b) => {
-        if (by === 'count') {
-          return Number(b.dataset.count) - Number(a.dataset.count);
-        }
-        return a.dataset.name.localeCompare(b.dataset.name);
+    const presentLetters = new Set(items.map(item => item.dataset.name[0].toUpperCase()));
+
+    // "All" button — tall, standalone on the left
+    const allBtn = document.createElement('button');
+    allBtn.className = 'tag-alpha-btn tag-alpha-btn--all tag-alpha-btn--active';
+    allBtn.textContent = 'All';
+    allBtn.dataset.letter = '';
+    alphaBar.appendChild(allBtn);
+
+    // Grid of all 26 letters
+    const grid = document.createElement('div');
+    grid.className = 'tag-alpha-grid';
+    alphaBar.appendChild(grid);
+
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter => {
+      const btn = document.createElement('button');
+      btn.className = 'tag-alpha-btn';
+      btn.textContent = letter;
+      btn.dataset.letter = letter;
+      if (!presentLetters.has(letter)) {
+        btn.disabled = true;
+        btn.classList.add('tag-alpha-btn--empty');
+      }
+      grid.appendChild(btn);
+    });
+
+    function filterByLetter(letter) {
+      alphaBar.querySelectorAll('.tag-alpha-btn').forEach(btn => {
+        btn.classList.toggle('tag-alpha-btn--active', btn.dataset.letter === letter);
       });
-      items.forEach(item => list.appendChild(item));
+      items.forEach(item => {
+        item.style.display = (letter && item.dataset.name[0].toUpperCase() !== letter) ? 'none' : '';
+      });
     }
 
-    buttons.forEach(btn => {
+    alphaBar.addEventListener('click', e => {
+      const btn = e.target.closest('.tag-alpha-btn');
+      if (btn && !btn.disabled) filterByLetter(btn.dataset.letter);
+    });
+
+    function sortItems(by) {
+      const sorted = [...items].sort((a, b) => {
+        if (by === 'count') return Number(b.dataset.count) - Number(a.dataset.count);
+        return a.dataset.name.localeCompare(b.dataset.name);
+      });
+      sorted.forEach(item => list.appendChild(item));
+    }
+
+    sortBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        buttons.forEach(b => { b.classList.remove('tag-sort-btn--active'); b.setAttribute('aria-pressed', 'false'); });
+        sortBtns.forEach(b => { b.classList.remove('tag-sort-btn--active'); b.setAttribute('aria-pressed', 'false'); });
         btn.classList.add('tag-sort-btn--active');
         btn.setAttribute('aria-pressed', 'true');
+
+        const isAlpha = btn.dataset.sort === 'alpha';
+        alphaBar.hidden = !isAlpha;
+        if (!isAlpha) filterByLetter('');
+
         sortItems(btn.dataset.sort);
       });
     });
+
+    // Initialise in alpha mode with bar visible
+    sortItems('alpha');
+    alphaBar.hidden = false;
   })();
 </script>

@@ -25,10 +25,14 @@ eleventyComputed:
 
   <section class="post-list container">
     {% if pagination.pageNumber == 0 %}
-      <h2 class="post-list-heading">All Posts</h2>
+      <h2 class="post-list-heading" id="post-list-heading">All Posts</h2>
+      <div class="post-filter-bar">
+        <span class="post-filter-label">City</span>
+        <div class="post-filter-cities" id="post-filter-cities"></div>
+      </div>
     {% endif %}
     {% if paginatedPosts.length %}
-      <div class="post-grid">
+      <div class="post-grid" id="post-grid">
         {% for post in paginatedPosts %}
           <article class="post-card" data-url="{{ post.url }}">
             <div class="post-card-thumb">
@@ -73,12 +77,13 @@ eleventyComputed:
         {% endfor %}
       </div>
       <p id="search-no-results" hidden>No posts match your search.</p>
+      <p id="filter-no-results" hidden>No posts match this filter.</p>
     {% else %}
       <p class="no-posts">No posts yet — check back soon.</p>
     {% endif %}
 
     {% if pagination.hrefs.length > 1 %}
-      <nav class="pagination" aria-label="Page navigation">
+      <nav class="pagination" id="post-pagination" aria-label="Page navigation">
         <a href="{{ pagination.previousPageHref or '#' }}"
            class="pagination-btn pagination-prev{% if not pagination.previousPageHref %} pagination-btn--disabled{% endif %}"
            {% if not pagination.previousPageHref %}aria-disabled="true"{% endif %}>&#8592;</a>
@@ -100,3 +105,138 @@ eleventyComputed:
     {% endif %}
   </section>
 </div>
+
+{% if pagination.pageNumber == 0 %}
+<script>
+(function () {
+  const CITY_TAGS = new Set(['fukuoka','hiroshima','hokkaido','ishikawa','kagawa','kanazawa','kyoto','nagoya','okinawa','osaka','sapporo','shikoku','tokyo']);
+
+  const grid       = document.getElementById('post-grid');
+  const pagination = document.getElementById('post-pagination');
+  const cityBar    = document.getElementById('post-filter-cities');
+  const heading    = document.getElementById('post-list-heading');
+  const noResults  = document.getElementById('filter-no-results');
+
+  const originalGrid = grid.innerHTML;
+  let allPosts = [];
+  let activeCity = '';
+
+  function imgSrc(url, w, q) {
+    if (!url) return '';
+    try {
+      const u = new URL(url);
+      u.searchParams.set('w', String(w));
+      u.searchParams.set('q', String(q));
+      return u.toString();
+    } catch { return url; }
+  }
+
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function slugify(str) {
+    return str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function renderCard(post) {
+    const tags = post.tags || [];
+    const tagsHtml = tags.map(t =>
+      `<a href="/tags/${slugify(t)}/" class="tag">${esc(t)}</a>`
+    ).join('');
+    const src    = imgSrc(post.thumbnail, 600, 72);
+    const src400 = imgSrc(post.thumbnail, 400, 65);
+    const src800 = imgSrc(post.thumbnail, 800, 75);
+    const thumb  = post.thumbnail
+      ? `<img src="${esc(src)}" srcset="${esc(src400)} 400w, ${esc(src800)} 800w" sizes="(max-width:600px) calc(100vw - 2rem), 380px" alt="${esc(post.title)}" loading="lazy" />`
+      : '';
+    return `
+      <article class="post-card" data-url="${esc(post.url)}">
+        <div class="post-card-thumb">${thumb}</div>
+        <div class="post-card-body">
+          ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
+          <h2 class="post-card-title"><a href="${esc(post.url)}">${esc(post.title)}</a></h2>
+          ${post.author ? `<p class="post-card-author">${esc(post.author)}</p>` : ''}
+          ${post.description ? `<p class="post-card-excerpt">${esc(post.description)}</p>` : ''}
+          <div class="post-meta">
+            <time>${formatDate(post.date)}</time>
+            ${post.readingTime ? `<span class="post-meta-sep">·</span><span>${post.readingTime} min read</span>` : ''}
+            <a href="${esc(post.url)}" class="post-card-cta" tabindex="-1" aria-hidden="true">Read post →</a>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function apply() {
+    if (!activeCity) {
+      grid.innerHTML = originalGrid;
+      noResults.hidden = true;
+      if (pagination) pagination.hidden = false;
+      heading.textContent = 'All Posts';
+      return;
+    }
+
+    if (pagination) pagination.hidden = true;
+
+    const filtered = allPosts
+      .filter(p => (p.tags || []).some(t => t.toLowerCase() === activeCity))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const cityLabel = allPosts
+      .flatMap(p => p.tags || [])
+      .find(t => t.toLowerCase() === activeCity) || activeCity;
+
+    heading.textContent = `${cityLabel} Posts`;
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      noResults.hidden = false;
+    } else {
+      noResults.hidden = true;
+      grid.innerHTML = filtered.map(renderCard).join('');
+    }
+  }
+
+  fetch('/search-index.json')
+    .then(r => r.json())
+    .then(posts => {
+      allPosts = posts;
+
+      const citiesFound = new Set();
+      posts.forEach(p => (p.tags || []).forEach(t => {
+        if (CITY_TAGS.has(t.toLowerCase())) citiesFound.add(t);
+      }));
+
+      const allBtn = document.createElement('button');
+      allBtn.className = 'post-filter-city post-filter-city--active';
+      allBtn.textContent = 'All';
+      allBtn.dataset.city = '';
+      cityBar.appendChild(allBtn);
+
+      [...citiesFound].sort().forEach(city => {
+        const btn = document.createElement('button');
+        btn.className = 'post-filter-city';
+        btn.textContent = city;
+        btn.dataset.city = city.toLowerCase();
+        cityBar.appendChild(btn);
+      });
+    });
+
+  cityBar.addEventListener('click', e => {
+    const cityBtn = e.target.closest('.post-filter-city');
+    if (!cityBtn) return;
+    document.querySelectorAll('.post-filter-city').forEach(b => b.classList.remove('post-filter-city--active'));
+    cityBtn.classList.add('post-filter-city--active');
+    activeCity = cityBtn.dataset.city;
+    apply();
+  });
+})();
+</script>
+{% endif %}

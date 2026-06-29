@@ -10,8 +10,10 @@ A fast, dark-themed blog built with [Eleventy](https://www.11ty.dev/) — themed
 
 - **Zero-JS page loads** — Eleventy generates all pages at build time; JavaScript is strictly progressive enhancement
 - **Client-side search** — instant filtering across all posts without a backend, driven by a generated JSON index
+- **Homepage city filter** — filter all posts by city/region, fetching from the search index and dynamically rendering results; resets to paginated view when cleared
 - **SPA-style pagination** — page navigation fetches and swaps only the post grid in-place, preserving the hero and header without any layout shift
-- **Tag system** — each tag generates its own archive page automatically
+- **Tag system** — each tag generates its own archive page automatically; tags page supports A→Z sort with a full 26-letter alpha filter (two even rows of 13)
+- **Rankings page** — editorially curated restaurant list with images, price indicators, and links to related posts
 - **Responsive images** — `srcset` at multiple widths with `fetchpriority="high"` on the LCP image; Lighthouse performance score 93+
 - **Non-render-blocking fonts** — Google Fonts loaded via `preload` + async swap, saving ~880ms on first paint
 - **Minified CSS** — `clean-css` post-build transform, no preprocessor required
@@ -73,7 +75,10 @@ src/
 ├── css/style.css            # Single stylesheet, design-token driven
 ├── js/search.js             # Search + client-side pagination
 ├── posts/                   # Markdown blog posts
-├── index.njk                # Homepage + pagination
-├── tagpage.njk              # Tag archive pages
+├── index.njk                # Homepage + pagination + city filter (inline script)
+├── rankings.njk             # Curated restaurant rankings page
+├── tags.njk                 # Tags index with sort and alpha filter
+├── tagpage.njk              # Individual tag archive pages
+├── about.njk                # About page
 └── search-index.11ty.js     # Generates /search-index.json at build time
 ```

@@ -12,6 +12,7 @@ tags:
   - Street Food
   - Nightlife
   - Ramen
+  - Fukuoka
 ---
 
 In most Japanese cities, the *yatai* — the portable outdoor food stall — is a relic. Post-war urban policy, hygiene regulations, and the general tidying impulse of modern civic planning eliminated them from Tokyo, Osaka, and Kyoto over the course of several decades. Fukuoka, on the northern tip of Kyushu, decided not to bother.

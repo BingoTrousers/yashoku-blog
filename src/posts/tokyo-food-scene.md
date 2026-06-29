@@ -12,6 +12,7 @@ tags:
   - Depachika
   - Yakitori
   - Tsukiji
+  - Tokyo
 ---
 
 There is a statistic that gets repeated so often it has almost lost its power to surprise: Tokyo has more Michelin-starred restaurants than any other city on earth. More than Paris. More than New York. More than London and Hong Kong combined. The number fluctuates year to year, but it has been sitting somewhere above 200 for more than a decade.

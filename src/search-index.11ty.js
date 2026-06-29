@@ -12,6 +12,10 @@ class SearchIndex {
       description: post.data.description || "",
       url: post.url,
       tags: (post.data.tags || []).filter((t) => t !== "posts"),
+      thumbnail: post.data.thumbnail || "",
+      date: post.date ? post.date.toISOString() : "",
+      author: post.data.author || "",
+      readingTime: post.data.readingTime || null,
     }));
     return JSON.stringify(posts);
   }

@@ -12,6 +12,7 @@ tags:
   - Shojin Ryori
   - Obanzai
   - Tofu
+  - Kyoto
 ---
 
 Kyoto is often described as the cultural heart of Japan, and nowhere is that more apparent than at the table. The food here is not trying to impress you. It is trying to be exactly what it is — seasonal, considered, and quietly extraordinary.
