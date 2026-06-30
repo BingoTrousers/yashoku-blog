@@ -1216,13 +1216,87 @@ a.tag:hover {
   margin: 0;
 }
 
+/* ── Search toggle / close buttons ─────────────────────────── */
+.search-toggle,
+.search-close {
+  display: none; /* shown only on mobile via media query */
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.search-toggle:hover { border-color: var(--color-neon-cyan); color: var(--color-neon-cyan); }
+.search-close:hover  { border-color: var(--color-neon-pink); color: var(--color-neon-pink); }
+
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .container { padding-inline: var(--space-md); }
   .post-grid { grid-template-columns: 1fr; }
-  .site-header .container { height: 54px; gap: var(--space-sm); }
-  .site-header-search { flex: 0 1 140px; }
-  .site-title { font-size: 1.1rem; }
-  .site-nav { gap: var(--space-md); }
   .hero::after { font-size: 8rem; opacity: 0.03; }
+
+  /* Two-row header: [logo | search-icon] / [nav] */
+  .site-header .container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 52px auto;
+    grid-template-areas: "title search-area" "nav nav";
+    height: auto;
+    padding-block: 0;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .site-title {
+    grid-area: title;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .site-header-search {
+    grid-area: search-area;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: var(--space-sm);
+  }
+
+  #search-input { display: none; }
+  .search-toggle { display: flex; }
+
+  .site-nav {
+    grid-area: nav;
+    margin-left: 0;
+    justify-content: space-around;
+    border-top: 1px solid rgba(160, 100, 255, 0.12);
+    padding-block: 9px;
+    gap: 0;
+  }
+
+  .site-nav a { font-size: 0.8rem; letter-spacing: 0.04em; }
+
+  /* Search overlay — covers the full header when open */
+  .site-header.search-open .site-header-search {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-md);
+    gap: var(--space-sm);
+    background: rgba(7, 7, 15, 0.97);
+    z-index: 10;
+  }
+
+  .site-header.search-open #search-input { display: block; flex: 1; }
+  .site-header.search-open .search-toggle { display: none; }
+  .site-header.search-open .search-close  { display: flex; }
 }
