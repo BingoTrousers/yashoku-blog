@@ -55,16 +55,25 @@
       var close  = document.getElementById('search-close');
       var header = document.querySelector('.site-header');
       var input  = document.getElementById('search-input');
+
+      window.closeSearch = function (clearInput) {
+        header.classList.remove('search-open');
+        document.body.classList.remove('search-open');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        if (clearInput) {
+          input.value = '';
+          input.dispatchEvent(new Event('input'));
+        }
+      };
+
       if (toggle) toggle.addEventListener('click', function () {
         header.classList.add('search-open');
+        document.body.classList.add('search-open');
         toggle.setAttribute('aria-expanded', 'true');
         input.focus();
       });
       if (close) close.addEventListener('click', function () {
-        header.classList.remove('search-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        input.value = '';
-        input.dispatchEvent(new Event('input'));
+        window.closeSearch(true);
       });
     })();
   </script>

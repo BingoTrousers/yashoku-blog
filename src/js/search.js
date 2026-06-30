@@ -37,7 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   input.addEventListener('input', () => { if (onListPage()) filter(input.value); });
   input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !onListPage()) {
+    if (e.key !== 'Enter') return;
+    if (onListPage()) {
+      // Close overlay so filtered results are visible, then scroll to them
+      if (typeof window.closeSearch === 'function') window.closeSearch(false);
+      const postList = document.querySelector('.post-list');
+      if (postList) {
+        const header = document.querySelector('.site-header');
+        const top = postList.getBoundingClientRect().top + window.scrollY - (header ? header.offsetHeight + 12 : 12);
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    } else {
       const q = input.value.trim();
       if (q) location.href = `/?q=${encodeURIComponent(q)}`;
     }

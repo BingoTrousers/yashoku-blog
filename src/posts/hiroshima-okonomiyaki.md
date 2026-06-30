@@ -3,7 +3,7 @@ layout: post.njk
 title: "Hiroshima's Okonomiyaki: The Dish That Rebuilt a City"
 description: Osaka has its version. Hiroshima has its own — and will tell you, firmly and without embarrassment, that theirs is better. After eating it, you may not disagree.
 date: 2025-05-15
-author: Hiroshi Nakamura
+author: Kenji Mori
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1764069138714-bcc6783b8e48?auto=format&fit=crop&w=800&q=80"
 tags:

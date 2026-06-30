@@ -3,7 +3,7 @@ layout: post.njk
 title: "Nagoya-Meshi: The Stubbornly Local Food Culture of Japan's Third City"
 description: Tokyo overshadows it. Osaka dismisses it. Nagoya, largely unbothered, has spent decades building one of the most distinctive regional food cultures in the country.
 date: 2025-04-18
-author: Hiroshi Nakamura
+author: Kenji Mori
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80"
 tags:

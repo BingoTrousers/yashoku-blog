@@ -3,7 +3,7 @@ layout: post.njk
 title: "Kanazawa: Japan's Other Food Capital"
 description: Overshadowed by Kyoto and underestimated by Tokyo, Kanazawa quietly offers some of the finest seafood in Japan and a food culture refined over four centuries of isolation.
 date: 2025-06-05
-author: Hiroshi Nakamura
+author: Kenji Mori
 readingTime: 7
 thumbnail: "https://images.unsplash.com/photo-1611762687807-7cdd09aef422?auto=format&fit=crop&w=800&q=80"
 tags:

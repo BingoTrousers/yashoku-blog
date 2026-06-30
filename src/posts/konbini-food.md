@@ -3,7 +3,7 @@ layout: post.njk
 title: "The Convenience Store as Culinary Institution"
 description: Japan's konbini are open at 3am, they sell hot food from behind the counter, and they have spent decades quietly raising the floor of what cheap fast food can be.
 date: 2025-02-25
-author: Hiroshi Nakamura
+author: Kenji Mori
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80"
 tags:

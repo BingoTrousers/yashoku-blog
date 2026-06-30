@@ -3,7 +3,7 @@ layout: post.njk
 title: "Fukuoka's Yatai: Japan's Last Great Street Stall Culture"
 description: Every other Japanese city bulldozed its outdoor food stalls decades ago. Fukuoka kept them. On a warm night by the river, you understand exactly why.
 date: 2025-02-10
-author: Hiroshi Nakamura
+author: Yuki Tanaka
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1749894274841-95fa78941841?auto=format&fit=crop&w=800&q=80"
 tags:

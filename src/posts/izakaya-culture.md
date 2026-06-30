@@ -3,7 +3,7 @@ layout: post.njk
 title: "The Izakaya: Japan's Most Democratic Dining Experience"
 description: Part pub, part restaurant, entirely its own thing. The izakaya is where Japan unbuttons its collar — and where some of the best eating in the country happens.
 date: 2025-03-05
-author: Hiroshi Nakamura
+author: Yuki Tanaka
 readingTime: 7
 thumbnail: "https://images.unsplash.com/photo-1572291244855-44aa55da2137?auto=format&fit=crop&w=800&q=80"
 tags:

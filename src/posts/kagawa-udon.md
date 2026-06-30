@@ -3,7 +3,7 @@ layout: post.njk
 title: "The Udon Pilgrimage: Kagawa's Noodle Obsession and Why It Works"
 description: Kagawa Prefecture has one udon shop for every 1,500 residents and its people eat it for breakfast. The rest of the country has never quite caught up.
 date: 2025-05-09
-author: Hiroshi Nakamura
+author: Yuki Tanaka
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1583623025817-d180a2221d0a?auto=format&fit=crop&w=800&q=80"
 tags:

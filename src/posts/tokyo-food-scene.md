@@ -3,7 +3,7 @@ layout: post.njk
 title: "Tokyo at the Table: How to Eat the World's Greatest Food City"
 description: More Michelin stars than Paris. Ramen shops with year-long queues. Convenience stores that embarrass most restaurants. Tokyo is not a food city — it's a food civilisation.
 date: 2025-01-18
-author: Hiroshi Nakamura
+author: Yuki Tanaka
 readingTime: 8
 thumbnail: "https://images.unsplash.com/photo-1759970752518-b0ffa38c130b?auto=format&fit=crop&w=800&q=80"
 tags:

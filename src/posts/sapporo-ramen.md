@@ -3,7 +3,7 @@ layout: post.njk
 title: "Sapporo in Winter: Inside Hokkaido's Miso Ramen Scene"
 description: When it is minus fifteen outside and the snow has been falling for three days, a bowl of Sapporo miso ramen is not comfort food. It is survival.
 date: 2025-03-22
-author: Hiroshi Nakamura
+author: Yuki Tanaka
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"
 tags:

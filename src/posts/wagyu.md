@@ -3,7 +3,7 @@ layout: post.njk
 title: "Wagyu: Understanding Japan's Most Misunderstood Ingredient"
 description: Outside Japan, wagyu has become a marketing term. Inside Japan, it is a set of very specific cattle breeds with very specific qualities — and a long argument about which prefecture produces the best of them.
 date: 2025-03-15
-author: Hiroshi Nakamura
+author: Kenji Mori
 readingTime: 7
 thumbnail: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80"
 tags:

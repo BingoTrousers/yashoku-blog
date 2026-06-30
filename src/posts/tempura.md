@@ -3,7 +3,7 @@ layout: post.njk
 title: "Tempura: The Art of Disappearing Batter"
 description: The goal of good tempura is not the coating — it is to make you forget the coating is there. That takes considerably more skill than it sounds.
 date: 2025-03-28
-author: Hiroshi Nakamura
+author: Kenji Mori
 readingTime: 6
 thumbnail: "https://images.unsplash.com/photo-1570078362689-c57c33cca104?auto=format&fit=crop&w=800&q=80"
 tags:

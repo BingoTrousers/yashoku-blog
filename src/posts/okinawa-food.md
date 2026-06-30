@@ -3,7 +3,7 @@ layout: post.njk
 title: "Okinawa: Japan's Most Distinct Food Culture"
 description: Seven hundred kilometres of open ocean separate Okinawa from the Japanese mainland. The food reflects every kilometre of that distance.
 date: 2025-04-05
-author: Hiroshi Nakamura
+author: Yuki Tanaka
 readingTime: 7
 thumbnail: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
 tags:
