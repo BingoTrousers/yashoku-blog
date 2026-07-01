@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const onListPage = () => document.querySelector('.post-card') !== null;
   let posts = [];
 
+  // The homepage paginates posts (6 per page), so a search may need to surface
+  // matches that aren't among the currently-rendered cards. When that grid is
+  // present, rebuild it from the full search index instead of just toggling
+  // the cards already on the page.
+  const pagedGrid = document.getElementById('post-grid');
+  const originalGridHTML = pagedGrid ? pagedGrid.innerHTML : null;
+
   fetch('/search-index.json')
     .then(r => r.json())
     .then(data => {
@@ -15,20 +22,94 @@ document.addEventListener('DOMContentLoaded', () => {
       if (q) { input.value = q; filter(q); }
     });
 
+  function imgSrc(url, w, q) {
+    if (!url) return '';
+    try {
+      const u = new URL(url);
+      u.searchParams.set('w', String(w));
+      u.searchParams.set('q', String(q));
+      return u.toString();
+    } catch { return url; }
+  }
+
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function slugify(str) {
+    return str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function renderCard(post) {
+    const tags = post.tags || [];
+    const tagsHtml = tags.map(t =>
+      `<a href="/tags/${slugify(t)}/" class="tag">${esc(t)}</a>`
+    ).join('');
+    const src    = imgSrc(post.thumbnail, 600, 60);
+    const src400 = imgSrc(post.thumbnail, 400, 55);
+    const src800 = imgSrc(post.thumbnail, 800, 60);
+    const thumb  = post.thumbnail
+      ? `<img src="${esc(src)}" srcset="${esc(src400)} 400w, ${esc(src800)} 800w" sizes="(max-width:600px) calc(100vw - 2rem), 380px" alt="${esc(post.title)}" loading="lazy" />`
+      : '';
+    return `
+      <article class="post-card" data-url="${esc(post.url)}">
+        <div class="post-card-thumb">${thumb}</div>
+        <div class="post-card-body">
+          ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
+          <h2 class="post-card-title"><a href="${esc(post.url)}">${esc(post.title)}</a></h2>
+          ${post.author ? `<p class="post-card-author">${esc(post.author)}</p>` : ''}
+          ${post.description ? `<p class="post-card-excerpt">${esc(post.description)}</p>` : ''}
+          <div class="post-meta">
+            <time>${formatDate(post.date)}</time>
+            ${post.readingTime ? `<span class="post-meta-sep">·</span><span>${post.readingTime} min read</span>` : ''}
+            <a href="${esc(post.url)}" class="post-card-cta" tabindex="-1" aria-hidden="true">Read post →</a>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function matches(post, term) {
+    const haystack = [post.title, post.description, ...(post.tags || [])].join(' ').toLowerCase();
+    return term.split(/\s+/).every(word => haystack.includes(word));
+  }
+
   function filter(q) {
     const term = q.trim().toLowerCase();
-    const cards = document.querySelectorAll('.post-card');
+
+    const pagination = document.getElementById('post-pagination');
+
     if (!term) {
-      cards.forEach(c => c.style.display = '');
+      if (pagedGrid && originalGridHTML !== null) pagedGrid.innerHTML = originalGridHTML;
+      if (pagination) pagination.hidden = false;
+      document.querySelectorAll('.post-card').forEach(c => c.style.display = '');
       if (noResults) noResults.hidden = true;
       return;
     }
+
+    // Paginated homepage grid: search across every post, not just the visible page.
+    if (pagedGrid) {
+      const matched = posts
+        .filter(p => matches(p, term))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (pagination) pagination.hidden = true;
+      pagedGrid.innerHTML = matched.map(renderCard).join('');
+      if (noResults) noResults.hidden = matched.length > 0;
+      return;
+    }
+
+    // Unpaginated pages (e.g. tag archives): all matching posts are already rendered.
     let visible = 0;
-    cards.forEach(card => {
+    document.querySelectorAll('.post-card').forEach(card => {
       const post = posts.find(p => p.url === card.dataset.url);
       if (!post) return;
-      const haystack = [post.title, post.description, ...(post.tags || [])].join(' ').toLowerCase();
-      const match = term.split(/\s+/).every(word => haystack.includes(word));
+      const match = matches(post, term);
       card.style.display = match ? '' : 'none';
       if (match) visible++;
     });
