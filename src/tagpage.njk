@@ -19,7 +19,7 @@ layout: base.njk
 
   <header class="tag-archive-header">
     <h1 class="tag-archive-title"><span class="tag tag--large">{{ tag }}</span></h1>
-    <p class="tag-archive-count">{{ collections[tag].length }} post{% if collections[tag].length != 1 %}s{% endif %}</p>
+    <span class="tag-archive-count">{{ collections[tag].length }} post{% if collections[tag].length != 1 %}s{% endif %}</span>
   </header>
 
   <div class="post-grid">
@@ -28,8 +28,8 @@ layout: base.njk
         <div class="post-card-thumb">
           {% if post.data.thumbnail %}
             <img
-              src="{{ post.data.thumbnail | imgSrc(600, 72) }}"
-              srcset="{{ post.data.thumbnail | imgSrc(400, 65) }} 400w, {{ post.data.thumbnail | imgSrc(800, 75) }} 800w"
+              src="{{ post.data.thumbnail | imgSrc(600, 60) }}"
+              srcset="{{ post.data.thumbnail | imgSrc(400, 55) }} 400w, {{ post.data.thumbnail | imgSrc(800, 60) }} 800w"
               sizes="(max-width: 600px) calc(100vw - 2rem), 380px"
               alt="{{ post.data.title }}"
               {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} />

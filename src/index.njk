@@ -38,8 +38,8 @@ eleventyComputed:
             <div class="post-card-thumb">
               {% if post.data.thumbnail %}
                 <img
-                  src="{{ post.data.thumbnail | imgSrc(600, 72) }}"
-                  srcset="{{ post.data.thumbnail | imgSrc(400, 65) }} 400w, {{ post.data.thumbnail | imgSrc(800, 75) }} 800w"
+                  src="{{ post.data.thumbnail | imgSrc(600, 60) }}"
+                  srcset="{{ post.data.thumbnail | imgSrc(400, 55) }} 400w, {{ post.data.thumbnail | imgSrc(800, 60) }} 800w"
                   sizes="(max-width: 600px) calc(100vw - 2rem), 380px"
                   alt="{{ post.data.title }}"
                   {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} />
@@ -151,9 +151,9 @@ eleventyComputed:
     const tagsHtml = tags.map(t =>
       `<a href="/tags/${slugify(t)}/" class="tag">${esc(t)}</a>`
     ).join('');
-    const src    = imgSrc(post.thumbnail, 600, 72);
-    const src400 = imgSrc(post.thumbnail, 400, 65);
-    const src800 = imgSrc(post.thumbnail, 800, 75);
+    const src    = imgSrc(post.thumbnail, 600, 60);
+    const src400 = imgSrc(post.thumbnail, 400, 55);
+    const src800 = imgSrc(post.thumbnail, 800, 60);
     const thumb  = post.thumbnail
       ? `<img src="${esc(src)}" srcset="${esc(src400)} 400w, ${esc(src800)} 800w" sizes="(max-width:600px) calc(100vw - 2rem), 380px" alt="${esc(post.title)}" loading="lazy" />`
       : '';

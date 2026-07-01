@@ -1003,11 +1003,14 @@ a.tag:hover {
 
 /* ── Tag archive page ──────────────────────────────────────── */
 .tag-archive-header {
-  margin-bottom: var(--space-2xl);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-block: var(--space-md) var(--space-xl);
 }
 
 .tag-archive-title {
-  margin-block: var(--space-md) var(--space-sm);
+  margin-block: 0;
 }
 
 .tag-archive-count {
